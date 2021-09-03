@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mssql_aw:latest
+    build:
+      context: .
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: blog_6109
+    volumes:
+      - ./mssql_data:/var/opt/mssql/data
+    ports:
+      - 1433:1433
+    networks:
+      lan:
+        ipv4_address: 100.6.0.2
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      lan:
+        ipv4_address: 100.6.0.3
+
+networks:
+  lan:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 100.6.0.0/24
+         gateway: 100.6.0.1
